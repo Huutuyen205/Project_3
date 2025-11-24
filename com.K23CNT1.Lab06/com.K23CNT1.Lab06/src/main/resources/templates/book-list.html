@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book List</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h2 { color: #343a40; }
+
+        /* Style cho nút Thêm mới */
+        .btn-add {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        .btn-add:hover { background-color: #218838; }
+
+        /* Style cho Bảng */
+        table {
+            width: 100%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        tr:hover { background-color: #f1f1f1; }
+
+        /* Ảnh nhỏ trong bảng */
+        img {
+            border-radius: 4px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+        }
+
+        /* Nút Sửa / Xóa */
+        .action-link {
+            text-decoration: none;
+            font-weight: 500;
+            margin: 0 5px;
+        }
+        .edit { color: #ffc107; }
+        .delete { color: #dc3545; }
+        .action-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<h2>BOOK LIST</h2>
+
+<a href="/books/add" class="btn-add">+ Add New Book</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Price</th>
+        <th>Image</th>
+        <th>Author</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="b : ${books}">
+        <td th:text="${b.id}"></td>
+        <td th:text="${b.title}" style="font-weight: 600;"></td>
+        <td th:text="${#numbers.formatDecimal(b.price, 0, 'COMMA', 0, 'POINT')}"></td>
+        <td>
+            <img th:if="${b.image != null}" th:src="${b.image}" width="70" height="90"/>
+        </td>
+        <td th:text="${b.author != null ? b.author.name : 'Unknown'}"></td>
+
+        <td>
+            <a th:href="@{|/books/edit/${b.id}|}" class="action-link edit">Edit</a> |
+            <a th:href="@{|/books/delete/${b.id}|}" class="action-link delete"
+               onclick="return confirm('Bạn có chắc muốn xóa sách này không?');">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
