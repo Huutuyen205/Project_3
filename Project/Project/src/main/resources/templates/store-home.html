@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Trang Chủ - Cửa Hàng Truyện</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="container">
+    <h1>Cửa Hàng Truyện Tranh</h1>
+
+    <div style="text-align: right; margin-bottom: 20px;">
+        <a href="/admin/login" class="btn" style="background: #333;">Admin Login</a>
+    </div>
+
+    <div class="book-grid">
+        <div th:each="c : ${comics}" class="book-card">
+            <img th:src="@{'/images/' + ${c.imageUrl}}" alt="Ảnh bìa">
+
+            <h3 th:text="${c.title}">Tên truyện</h3>
+            <p class="price" th:text="${#numbers.formatDecimal(c.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></p>
+
+            <a th:href="@{'/buy/' + ${c.id}}" class="btn">Đặt Mua Ngay</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

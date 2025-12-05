@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Đặt Hàng</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="container" style="max-width: 600px;">
+    <h2>Xác Nhận Đặt Hàng</h2>
+
+    <div style="background: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 20px; display: flex; gap: 20px;">
+        <img th:src="@{'/images/' + ${comic.imageUrl}}" style="width: 80px; height: 120px; object-fit: cover;">
+        <div>
+            <h3 th:text="${comic.title}" style="margin-top: 0; text-align: left;"></h3>
+            <p class="price" th:text="${#numbers.formatDecimal(comic.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></p>
+        </div>
+    </div>
+
+    <form action="/order/save" method="post" th:object="${order}">
+        <input type="hidden" name="comicId" th:value="${comic.id}">
+
+        <div style="margin-bottom: 15px;">
+            <label>Họ và Tên:</label>
+            <input type="text" th:field="*{customerName}" required placeholder="Nguyễn Văn A" style="width: 100%; padding: 8px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Số điện thoại:</label>
+            <input type="text" th:field="*{phoneNumber}" required placeholder="09xxxxxxxx" style="width: 100%; padding: 8px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Địa chỉ nhận hàng:</label>
+            <textarea th:field="*{address}" required rows="3" placeholder="Số nhà, Phường, Quận..." style="width: 100%; padding: 8px;"></textarea>
+        </div>
+
+        <button type="submit" class="btn" style="width: 100%;">Hoàn Tất Đặt Hàng</button>
+        <div style="text-align: center; margin-top: 10px;">
+            <a href="/" style="color: #666;">Hủy bỏ</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

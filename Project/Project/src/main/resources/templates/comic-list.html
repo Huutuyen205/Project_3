@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Quản Lý Truyện</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1>Danh Sách Truyện</h1>
+        <a href="/admin/home" class="btn" style="background: #6c757d;">Quay lại Dashboard</a>
+    </div>
+
+    <div style="margin: 20px 0;">
+        <a href="/admin/comic/add" class="btn" style="background: #28a745;">+ Thêm Truyện Mới</a>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th style="width: 50px;">ID</th>
+            <th style="width: 100px;">Hình ảnh</th>
+            <th>Tên truyện</th>
+            <th>Giá tiền</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${comics}">
+            <td th:text="${c.id}"></td>
+            <td>
+                <img th:src="@{'/images/' + ${c.imageUrl}}" style="height: 60px; border-radius: 4px;">
+            </td>
+            <td th:text="${c.title}" style="font-weight: bold;"></td>
+            <td th:text="${#numbers.formatDecimal(c.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></td>
+            <td>
+                <a th:href="@{'/admin/comic/delete/' + ${c.id}}"
+                   class="btn"
+                   style="background: #dc3545; padding: 5px 10px;"
+                   onclick="return confirm('Bạn có chắc chắn muốn xóa cuốn này không?')">Xóa</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Thêm Truyện Mới</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="container" style="max-width: 600px;">
+    <h2>Thêm Truyện Mới</h2>
+
+    <form action="/admin/comic/save" method="post">
+        <div style="margin-bottom: 15px;">
+            <label>Tên Truyện:</label>
+            <input type="text" name="title" required placeholder="Ví dụ: Conan Tập 100" style="width: 100%; padding: 8px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Giá Tiền (VNĐ):</label>
+            <input type="number" name="price" required placeholder="Ví dụ: 25000" style="width: 100%; padding: 8px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Tên file ảnh (đã có trong thư mục images):</label>
+            <input type="text" name="imageUrl" required placeholder="Ví dụ: tap1.jpg" style="width: 100%; padding: 8px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Mô tả ngắn:</label>
+            <textarea name="description" rows="4" style="width: 100%; padding: 8px;"></textarea>
+        </div>
+
+        <button type="submit" class="btn" style="width: 100%;">Lưu Vào Kho</button>
+        <div style="text-align: center; margin-top: 15px;">
+            <a href="/admin/comics">Hủy bỏ</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
