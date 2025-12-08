@@ -1,25 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Trang Chủ - Cửa Hàng Truyện</title>
-    <link rel="stylesheet" href="/style.css">
-</head>
+<head><title>Cửa Hàng Truyện</title><link rel="stylesheet" href="/style.css"></head>
 <body>
 <div class="container">
-    <h1>Cửa Hàng Truyện Tranh</h1>
-
-    <div style="text-align: right; margin-bottom: 20px;">
-        <a href="/admin/login" class="btn" style="background: #333;">Admin Login</a>
+    <h1>Conan Shop</h1>
+    <div style="text-align: right;">
+        <a href="/admin/login" style="color: #666;">Admin Login</a>
     </div>
 
     <div class="book-grid">
         <div th:each="c : ${comics}" class="book-card">
             <img th:src="@{'/images/' + ${c.imageUrl}}" alt="Ảnh bìa">
+            <h3 th:text="${c.title}"></h3>
+            <span class="price" th:text="${#numbers.formatDecimal(c.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></span>
 
-            <h3 th:text="${c.title}">Tên truyện</h3>
-            <p class="price" th:text="${#numbers.formatDecimal(c.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></p>
-
-            <a th:href="@{'/buy/' + ${c.id}}" class="btn">Đặt Mua Ngay</a>
+            <a th:href="@{'/buy/' + ${c.id}}" class="btn btn-primary" style="width: 100%; box-sizing: border-box;">Đặt Mua</a>
         </div>
     </div>
 </div>
