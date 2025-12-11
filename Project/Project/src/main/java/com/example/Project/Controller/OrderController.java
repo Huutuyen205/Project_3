@@ -13,7 +13,7 @@ public class OrderController {
     @Autowired private OrderService orderService;
     @Autowired private ComicService comicService;
 
-    @GetMapping("/buy/{comicId}")
+    @GetMapping("/order-form/{comicId}")
     public String showOrderForm(@PathVariable Long comicId, Model model) {
         model.addAttribute("comic", comicService.getById(comicId));
         model.addAttribute("order", new Order());

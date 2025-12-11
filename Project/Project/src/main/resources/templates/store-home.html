@@ -50,7 +50,7 @@
                 <h3 th:text="${c.title}">Tên Truyện</h3>
                 <p class="price" th:text="${#numbers.formatDecimal(c.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></p>
 
-                <a th:href="@{'/buy/' + ${c.id}}" class="btn-orange">[MUA CAM]</a>
+                <a th:href="@{'/order-form/' + ${c.id}}" class="btn-orange">[MUA CAM]</a>
             </div>
         </div>
     </div>

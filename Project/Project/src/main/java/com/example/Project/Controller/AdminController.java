@@ -4,6 +4,7 @@ import com.example.Project.entity.Comic;
 import com.example.Project.security.Admin;
 import com.example.Project.service.AdminService;
 import com.example.Project.service.ComicService;
+import com.example.Project.service.OrderService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,8 +14,10 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+
     @Autowired private AdminService adminService;
     @Autowired private ComicService comicService;
+    @Autowired private OrderService orderService;
 
     @GetMapping("/login")
     public String loginPage() { return "login"; }
@@ -56,5 +59,14 @@ public class AdminController {
     public String delete(@PathVariable Long id) {
         comicService.delete(id);
         return "redirect:/admin/comics";
+    }
+
+    // 🔥 THÊM PHẦN XEM ĐƠN HÀNG
+    @GetMapping("/orders")
+    public String listOrders(Model model, HttpSession session) {
+        if (session.getAttribute("admin") == null) return "redirect:/admin/login";
+
+        model.addAttribute("orders", orderService.getAll());
+        return "order-list";
     }
 }

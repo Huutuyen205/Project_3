@@ -1,29 +1,40 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head><title>Thêm Truyện</title><link rel="stylesheet" href="/style.css"></head>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Xác Nhận Đơn Hàng</title>
+    <link rel="stylesheet" href="/css/order.css">
+</head>
 <body>
-<div class="container" style="max-width: 500px;">
-    <h2>Thêm Truyện Mới</h2>
 
-    <form action="/admin/comic/save" method="post">
-        <label>Tên Truyện:</label>
-        <input type="text" name="title" required placeholder="VD: Conan Tập 100">
+<div class="container">
 
-        <label>Giá Tiền:</label>
-        <input type="number" name="price" required placeholder="VD: 25000">
+    <h2>Xác Nhận Đơn Hàng</h2>
 
-        <label>Tên File Ảnh (trong thư mục images):</label>
-        <input type="text" name="imageUrl" required placeholder="VD: tap100.jpg">
+    <div class="comic-box">
+        <img src="/images/${comic.image}" alt="Ảnh truyện">
 
-        <label>Mô tả:</label>
-        <textarea name="description" placeholder="Nội dung tóm tắt..."></textarea>
-
-        <button type="submit" class="btn btn-success" style="width: 100%;">Lưu Vào Kho</button>
-
-        <div style="text-align: center; margin-top: 10px;">
-            <a href="/admin/comics" style="text-decoration: none; color: #666;">Hủy bỏ</a>
+        <div class="comic-info">
+            <h3>${comic.title}</h3>
+            <p class="price">${comic.price} đ</p>
         </div>
+    </div>
+
+    <form action="/order/save/${comic.id}" method="post" class="order-form">
+        <label>Họ tên người nhận:</label>
+        <input type="text" name="customerName" required>
+
+        <label>Số điện thoại:</label>
+        <input type="text" name="phone" required>
+
+        <label>Địa chỉ giao hàng:</label>
+        <textarea name="address" required></textarea>
+
+        <button type="submit" class="btn">Xác Nhận Đặt Hàng</button>
+        <a href="/comic/${comic.id}" class="cancel">Hủy bỏ</a>
     </form>
+
 </div>
+
 </body>
 </html>
