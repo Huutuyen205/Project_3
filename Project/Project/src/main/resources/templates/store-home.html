@@ -1,22 +1,64 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Cửa Hàng Truyện</title><link rel="stylesheet" href="/style.css"></head>
+<head>
+    <meta charset="UTF-8">
+    <title>ComicShop - Trang Chủ</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
 <body>
-<div class="container">
-    <h1>Conan Shop</h1>
-    <div style="text-align: right;">
-        <a href="/admin/login" style="color: #666;">Admin Login</a>
+
+<header class="header-black">
+    <div class="header-container">
+        <div class="logo">📖 ComicShop</div>
+
+        <div class="search-box">
+            <input type="text" placeholder="Tìm kiếm truyện tranh...">
+            <button class="search-btn">🔍</button>
+        </div>
+
+        <div class="user-admin">
+            <a href="/admin/login">👤 Admin</a>
+        </div>
     </div>
+</header>
+
+<nav class="menu-filter">
+    <div class="container">
+        <a href="#" class="active">Tất cả sách</a>
+        <a href="#">🕵️ Thám Tử Conan</a>
+        <a href="#">🐱 Doraemon</a>
+    </div>
+</nav>
+
+<section class="banner">
+    <div class="banner-content">
+        <h1>THẾ GIỚI TRUYỆN TRANH</h1>
+        <p>Sưu tầm những bộ truyện huyền thoại</p>
+    </div>
+</section>
+
+<main class="container main-body">
+    <h2 class="section-title">DANH SÁCH TRUYỆN</h2>
 
     <div class="book-grid">
         <div th:each="c : ${comics}" class="book-card">
-            <img th:src="@{'/images/' + ${c.imageUrl}}" alt="Ảnh bìa">
-            <h3 th:text="${c.title}"></h3>
-            <span class="price" th:text="${#numbers.formatDecimal(c.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></span>
+            <div class="card-img">
+                <img th:src="@{'/images/' + ${c.imageUrl}}" alt="Ảnh bìa">
+            </div>
 
-            <a th:href="@{'/buy/' + ${c.id}}" class="btn btn-primary" style="width: 100%; box-sizing: border-box;">Đặt Mua</a>
+            <div class="card-info">
+                <h3 th:text="${c.title}">Tên Truyện</h3>
+                <p class="price" th:text="${#numbers.formatDecimal(c.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></p>
+
+                <a th:href="@{'/buy/' + ${c.id}}" class="btn-orange">[MUA CAM]</a>
+            </div>
         </div>
     </div>
-</div>
+</main>
+
+<footer class="footer-black">
+    <p>Copyright © 2025 ComicShop. All rights reserved.</p>
+</footer>
+
 </body>
 </html>
