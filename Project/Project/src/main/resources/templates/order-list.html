@@ -7,30 +7,59 @@
 </head>
 <body>
 
-<div class="admin-container">
-    <h2>Danh Sách Đơn Hàng</h2>
+<div class="header-black">
+    <div class="header-container">
+        <div class="logo">ADMIN PANEL</div>
+        <div>
+            <a href="/admin/home" class="btn btn-secondary">Quay lại Dashboard</a>
+        </div>
+    </div>
+</div>
 
-    <table class="table">
+<div class="container">
+    <h1 style="margin-top: 20px; border-left: 4px solid #28a745;">📦 Quản Lý Đơn Hàng</h1>
+
+    <table>
+        <thead>
         <tr>
-            <th>ID</th>
-            <th>Truyện</th>
-            <th>Người nhận</th>
-            <th>SDT</th>
-            <th>Địa chỉ</th>
-            <th>Giá</th>
+            <th>Mã Đơn</th>
+            <th>Người Nhận</th>
+            <th>SĐT</th>
+            <th>Truyện Mua</th>
+            <th>Giá Tiền</th>
+            <th>Địa Chỉ</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="'#' + ${order.id}"></td>
+
+            <td th:text="${order.customerName}" style="font-weight: bold; color: #fff;"></td>
+
+            <td th:text="${order.phoneNumber}"></td>
+
+            <td>
+                <span th:if="${order.comic != null}" th:text="${order.comic.title}" style="color: #0af;"></span>
+                <span th:unless="${order.comic != null}" style="color: #f00;">(Truyện đã bị xóa)</span>
+            </td>
+
+            <td>
+                        <span th:if="${order.comic != null}"
+                              th:text="${#numbers.formatDecimal(order.comic.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"
+                              style="color: #0f0; font-weight: bold;">
+                        </span>
+            </td>
+
+            <td th:text="${order.address}"></td>
         </tr>
 
-        <tr th:each="o : ${orders}">
-            <td th:text="${o.id}"></td>
-            <td th:text="${o.comic.title}"></td>
-            <td th:text="${o.customerName}"></td>
-            <td th:text="${o.phone}"></td>
-            <td th:text="${o.address}"></td>
-            <td th:text="${o.price} + ' đ'"></td>
+        <tr th:if="${orders.isEmpty()}">
+            <td colspan="6" style="text-align: center; padding: 20px; color: #888;">
+                Chưa có đơn hàng nào.
+            </td>
         </tr>
+        </tbody>
     </table>
-
-    <a href="/admin/home" class="btn-back">← Quay lại</a>
 </div>
 
 </body>

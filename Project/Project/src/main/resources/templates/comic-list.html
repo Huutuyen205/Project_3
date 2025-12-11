@@ -1,41 +1,191 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Quản Lý Truyện</title><link rel="stylesheet" href="/style.css"></head>
-<body>
-<div class="container">
-    <h1>Danh Sách Truyện Tranh</h1>
+<head>
+    <title>Quản Lý Truyện (Dark Mode)</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        /* --- CẤU HÌNH DARK MODE --- */
+        body {
+            background-color: #121212; /* Nền đen dịu */
+            color: #e0e0e0; /* Chữ màu xám sáng */
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding-bottom: 50px;
+        }
 
-    <div style="margin-bottom: 15px;">
-        <a href="/admin/comic/add" class="btn btn-success">+ Thêm Mới</a>
-        <a href="/admin/home" class="btn btn-secondary" style="float: right;">Quay Lại Dashboard</a>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 15px;
+        }
+
+        /* Nút bấm */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            transition: 0.2s;
+        }
+        .btn-success { background: #198754; color: white; }
+        .btn-success:hover { background: #157347; }
+
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-secondary:hover { background: #5c636a; }
+
+        .btn-danger { background: #dc3545; color: white; padding: 6px 12px; font-size: 14px; }
+        .btn-danger:hover { background: #bb2d3b; }
+
+        /* Tiêu đề từng loại truyện */
+        .category-header {
+            background-color: #1e1e1e; /* Nền xám đậm */
+            color: #fff;
+            padding: 12px 20px;
+            margin-top: 40px;
+            margin-bottom: 0;
+            border-left: 5px solid #ff8c00; /* Màu cam điểm nhấn */
+            border-radius: 6px 6px 0 0;
+            font-size: 1.2rem;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Bảng tối màu */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #1e1e1e; /* Nền bảng tối */
+            border-radius: 0 0 6px 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #333; /* Đường kẻ mờ */
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: #252525; /* Header bảng sáng hơn chút */
+            color: #aaa;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        tr:hover {
+            background-color: #2a2a2a; /* Hiệu ứng khi di chuột */
+        }
+
+        /* Ảnh thumbnail */
+        .thumb-img {
+            width: 50px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #444;
+        }
+
+        .price-text {
+            color: #ffc107; /* Màu vàng cho giá tiền */
+            font-weight: bold;
+        }
+
+        /* Badge hiển thị ID */
+        .badge-id {
+            background: #333;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Quản Trị Kho Truyện</h1>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <a href="/admin/comic/add" class="btn btn-success">+ Thêm Truyện Mới</a>
+        <a href="/admin/home" class="btn btn-secondary">Quay Lại Dashboard</a>
     </div>
 
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Hình Ảnh</th>
-            <th>Tên Truyện</th>
-            <th>Giá Tiền</th>
-            <th>Hành Động</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="c : ${comics}">
-            <td th:text="${c.id}"></td>
-            <td>
-                <img th:src="@{'/images/' + ${c.imageUrl}}" style="height: 50px; width: auto;">
-            </td>
-            <td th:text="${c.title}" style="font-weight: bold;"></td>
-            <td th:text="${#numbers.formatDecimal(c.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></td>
-            <td>
-                <a th:href="@{'/admin/comic/delete/' + ${c.id}}"
-                   class="btn btn-danger"
-                   onclick="return confirm('Bạn chắc chắn muốn xóa cuốn này không?');">Xóa</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div th:if="${!listConan.empty}">
+        <h2 class="category-header">🕵️ Thám Tử Conan</h2>
+        <table>
+            <thead><tr><th>ID</th><th>Hình Ảnh</th><th>Tên Truyện</th><th>Giá Tiền</th><th>Hành Động</th></tr></thead>
+            <tbody>
+            <tr th:each="c : ${listConan}">
+                <td><span class="badge-id" th:text="'#'+${c.id}"></span></td>
+                <td><img th:src="@{'/images/' + ${c.imageUrl}}" class="thumb-img"></td>
+                <td th:text="${c.title}" style="font-weight: 600; color: #fff;"></td>
+                <td class="price-text" th:text="${#numbers.formatDecimal(c.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></td>
+                <td><a th:href="@{'/admin/comic/delete/' + ${c.id}}" class="btn btn-danger" onclick="return confirm('Xóa?')">Xóa</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${!listDoraemon.empty}">
+        <h2 class="category-header" style="border-left-color: #0af;">🐱 Doraemon</h2>
+        <table>
+            <thead><tr><th>ID</th><th>Hình Ảnh</th><th>Tên Truyện</th><th>Giá Tiền</th><th>Hành Động</th></tr></thead>
+            <tbody>
+            <tr th:each="c : ${listDoraemon}">
+                <td><span class="badge-id" th:text="'#'+${c.id}"></span></td>
+                <td><img th:src="@{'/images/' + ${c.imageUrl}}" class="thumb-img"></td>
+                <td th:text="${c.title}" style="font-weight: 600; color: #fff;"></td>
+                <td class="price-text" th:text="${#numbers.formatDecimal(c.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></td>
+                <td><a th:href="@{'/admin/comic/delete/' + ${c.id}}" class="btn btn-danger" onclick="return confirm('Xóa?')">Xóa</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${!listNguNgon.empty}">
+        <h2 class="category-header" style="border-left-color: #28a745;">🐢 Truyện Ngụ Ngôn</h2>
+        <table>
+            <thead><tr><th>ID</th><th>Hình Ảnh</th><th>Tên Truyện</th><th>Giá Tiền</th><th>Hành Động</th></tr></thead>
+            <tbody>
+            <tr th:each="c : ${listNguNgon}">
+                <td><span class="badge-id" th:text="'#'+${c.id}"></span></td>
+                <td><img th:src="@{'/images/' + ${c.imageUrl}}" class="thumb-img"></td>
+                <td th:text="${c.title}" style="font-weight: 600; color: #fff;"></td>
+                <td class="price-text" th:text="${#numbers.formatDecimal(c.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></td>
+                <td><a th:href="@{'/admin/comic/delete/' + ${c.id}}" class="btn btn-danger" onclick="return confirm('Xóa?')">Xóa</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${!listCoTich.empty}">
+        <h2 class="category-header" style="border-left-color: #ffc107;">🧚 Truyện Cổ Tích</h2>
+        <table>
+            <thead><tr><th>ID</th><th>Hình Ảnh</th><th>Tên Truyện</th><th>Giá Tiền</th><th>Hành Động</th></tr></thead>
+            <tbody>
+            <tr th:each="c : ${listCoTich}">
+                <td><span class="badge-id" th:text="'#'+${c.id}"></span></td>
+                <td><img th:src="@{'/images/' + ${c.imageUrl}}" class="thumb-img"></td>
+                <td th:text="${c.title}" style="font-weight: 600; color: #fff;"></td>
+                <td class="price-text" th:text="${#numbers.formatDecimal(c.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></td>
+                <td><a th:href="@{'/admin/comic/delete/' + ${c.id}}" class="btn btn-danger" onclick="return confirm('Xóa?')">Xóa</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>
 </body>
 </html>

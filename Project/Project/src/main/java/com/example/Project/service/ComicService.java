@@ -1,4 +1,5 @@
 package com.example.Project.service;
+
 import com.example.Project.entity.Comic;
 import com.example.Project.repository.ComicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,4 +14,17 @@ public class ComicService {
     public Comic getById(Long id) { return repo.findById(id).orElse(null); }
     public void save(Comic c) { repo.save(c); }
     public void delete(Long id) { repo.deleteById(id); }
+
+    // --- HÀM CHO TÌM KIẾM ---
+    public List<Comic> searchComics(String keyword) {
+        if (keyword != null && !keyword.isEmpty()) {
+            return repo.findByTitleContainingIgnoreCase(keyword);
+        }
+        return repo.findAll();
+    }
+
+    // --- HÀM CHO LỌC MENU ---
+    public List<Comic> getByCategory(String category) {
+        return repo.findByCategory(category);
+    }
 }

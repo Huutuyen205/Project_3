@@ -10,12 +10,10 @@
 <header class="header-black">
     <div class="header-container">
         <div class="logo">📖 ComicShop</div>
-
-        <div class="search-box">
-            <input type="text" placeholder="Tìm kiếm truyện tranh...">
-            <button class="search-btn">🔍</button>
-        </div>
-
+        <form action="/search" method="get" class="search-box">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="Tìm kiếm truyện tranh...">
+            <button type="submit" class="search-btn">🔍</button>
+        </form>
         <div class="user-admin">
             <a href="/admin/login">👤 Admin</a>
         </div>
@@ -24,9 +22,13 @@
 
 <nav class="menu-filter">
     <div class="container">
-        <a href="#" class="active">Tất cả sách</a>
-        <a href="#">🕵️ Thám Tử Conan</a>
-        <a href="#">🐱 Doraemon</a>
+        <a href="/" th:class="${!isSearching} ? 'active' : ''">🏠 Trang Chủ</a>
+
+        <a href="#muc-conan">🕵️ Conan</a>
+        <a href="#muc-doraemon">🐱 Doraemon</a>
+        <a href="#muc-ngungon">🐢 Ngụ Ngôn</a>
+        <a href="#muc-cotich">🧚 Cổ Tích</a>
+        <a href="#muc-nuocngoai">🌎 Nước Ngoài</a>
     </div>
 </nav>
 
@@ -38,23 +40,91 @@
 </section>
 
 <main class="container main-body">
-    <h2 class="section-title">DANH SÁCH TRUYỆN</h2>
 
-    <div class="book-grid">
-        <div th:each="c : ${comics}" class="book-card">
-            <div class="card-img">
-                <img th:src="@{'/images/' + ${c.imageUrl}}" alt="Ảnh bìa">
-            </div>
+    <div th:if="${isSearching}">
+        <h2 class="section-title">🔍 KẾT QUẢ TÌM KIẾM: <span th:text="${keyword}"></span></h2>
 
-            <div class="card-info">
-                <h3 th:text="${c.title}">Tên Truyện</h3>
-                <p class="price" th:text="${#numbers.formatDecimal(c.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></p>
+        <div th:if="${searchResults.empty}" style="text-align: center; color: red; margin: 20px;">
+            <h3>Không tìm thấy truyện nào phù hợp!</h3>
+        </div>
 
-                <a th:href="@{'/order-form/' + ${c.id}}" class="btn-orange">[MUA CAM]</a>
+        <div class="book-grid">
+            <div th:each="c : ${searchResults}" class="book-card">
+                <div class="card-img"><img th:src="@{'/images/' + ${c.imageUrl}}"></div>
+                <div class="card-info">
+                    <h3 th:text="${c.title}"></h3>
+                    <p class="price" th:text="${#numbers.formatDecimal(c.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></p>
+                    <a th:href="@{'/order-form/' + ${c.id}}" class="btn-orange">[MUA NGAY]</a>
+                </div>
             </div>
         </div>
     </div>
-</main>
+
+    <div th:unless="${isSearching}">
+
+        <div id="muc-conan" class="category-section">
+            <h2 class="section-title text-conan">🕵️ Thám Tử Conan</h2>
+            <div class="book-grid">
+                <div th:each="c : ${listConan}" class="book-card">
+                    <div class="card-img"><img th:src="@{'/images/' + ${c.imageUrl}}"></div>
+                    <div class="card-info">
+                        <h3 th:text="${c.title}"></h3>
+                        <p class="price" th:text="${#numbers.formatDecimal(c.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></p>
+                        <a th:href="@{'/order-form/' + ${c.id}}" class="btn-orange">[MUA NGAY]</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <div id="muc-doraemon" class="category-section">
+            <h2 class="section-title text-doraemon">🐱 Doraemon</h2>
+            <div class="book-grid">
+                <div th:each="c : ${listDoraemon}" class="book-card">
+                    <div class="card-img"><img th:src="@{'/images/' + ${c.imageUrl}}"></div>
+                    <div class="card-info">
+                        <h3 th:text="${c.title}"></h3>
+                        <p class="price" th:text="${#numbers.formatDecimal(c.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></p>
+                        <a th:href="@{'/order-form/' + ${c.id}}" class="btn-orange">[MUA NGAY]</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <div id="muc-ngungon" class="category-section">
+            <h2 class="section-title text-ngungon">🐢 Truyện Ngụ Ngôn</h2>
+            <div class="book-grid">
+                <div th:each="c : ${listNguNgon}" class="book-card">
+                    <div class="card-img"><img th:src="@{'/images/' + ${c.imageUrl}}"></div>
+                    <div class="card-info">
+                        <h3 th:text="${c.title}"></h3>
+                        <p class="price" th:text="${#numbers.formatDecimal(c.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></p>
+                        <a th:href="@{'/order-form/' + ${c.id}}" class="btn-orange">[MUA NGAY]</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <div id="muc-cotich" class="category-section">
+            <h2 class="section-title text-cotich">🧚 Truyện Cổ Tích</h2>
+            <div class="book-grid">
+                <div th:each="c : ${listCoTich}" class="book-card">
+                    <div class="card-img"><img th:src="@{'/images/' + ${c.imageUrl}}"></div>
+                    <div class="card-info">
+                        <h3 th:text="${c.title}"></h3>
+                        <p class="price" th:text="${#numbers.formatDecimal(c.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></p>
+                        <a th:href="@{'/order-form/' + ${c.id}}" class="btn-orange">[MUA NGAY]</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div> </main>
 
 <footer class="footer-black">
     <p>Copyright © 2025 ComicShop. All rights reserved.</p>

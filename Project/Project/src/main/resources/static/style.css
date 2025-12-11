@@ -262,3 +262,27 @@ h1, h2 {
     padding-left: 10px;
     margin-bottom: 20px;
 }
+/* 1. Kích hoạt trượt mượt mà cho toàn trang */
+html {
+    scroll-behavior: smooth;
+}
+
+/* 2. Căn chỉnh khoảng cách để khi trượt không bị header che mất tiêu đề */
+.comic-scroll-section {
+    scroll-margin-top: 20px; /* Cách trên 1 chút */
+    padding-top: 20px;
+}
+
+/* 3. Style cho cái gạch ngang phân cách (Màu trắng mờ) */
+.style-divider {
+    border: 0;
+    height: 1px;
+    /* Hiệu ứng gradient mờ dần 2 đầu */
+    background-image: linear-gradient(to right, rgba(0,0,0,0), rgba(255,255,255,0.3), rgba(0,0,0,0));
+    margin: 50px 0; /* Khoảng cách trên dưới */
+}
+
+/* 4. Sửa lại con trỏ chuột ở menu */
+.menu-filter a {
+    cursor: pointer;
+}
